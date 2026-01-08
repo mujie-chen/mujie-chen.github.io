@@ -1,4 +1,341 @@
 "Hello World"
 
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Levi’s Media Hub</title>
+  <meta name="description" content="Links to my Letterboxd, Serializd, Goodreads, and Notion databases." />
+
+  <style>
+    :root{
+      --bg: #0b0d12;
+      --panel: #121826;
+      --panel2: #0f1420;
+      --text: #e7eaf0;
+      --muted: #a7b0c2;
+      --line: rgba(255,255,255,.08);
+      --accent: #7c5cff;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 18px;
+      --max: 1020px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: var(--sans);
+      background: radial-gradient(1200px 600px at 20% -10%, rgba(124,92,255,.25), transparent 60%),
+                  radial-gradient(900px 500px at 95% 0%, rgba(60,200,255,.18), transparent 55%),
+                  var(--bg);
+      color: var(--text);
+    }
+    a{ color: inherit; text-decoration: none; }
+    a:hover{ text-decoration: underline; }
+
+    .wrap{
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 32px 18px 56px;
+    }
+    header{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap: 16px;
+      padding: 18px 18px 6px;
+      border: 1px solid var(--line);
+      background: rgba(18,24,38,.6);
+      backdrop-filter: blur(10px);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .title{ display:flex; flex-direction:column; gap:6px; }
+    h1{ margin:0; font-size: 22px; letter-spacing: .2px; }
+    .subtitle{ margin:0; color: var(--muted); font-size: 14px; line-height:1.35; }
+    .pillrow{ display:flex; flex-wrap:wrap; gap:8px; justify-content:flex-end; padding-top: 2px; }
+    .pill{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .grid{
+      margin-top: 18px;
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 14px;
+    }
+    .card{
+      grid-column: span 6;
+      border:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      min-height: 150px;
+    }
+    .card header{
+      all: unset;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding: 14px 14px 10px;
+      border-bottom:1px solid var(--line);
+      background: rgba(15,20,32,.55);
+    }
+    .card h2{
+      margin:0;
+      font-size: 15px;
+      letter-spacing: .2px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .badge{
+      font-family: var(--mono);
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      background: rgba(255,255,255,.03);
+    }
+    .card .body{
+      padding: 12px 14px 14px;
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+    }
+    .desc{ margin:0; color: var(--muted); font-size: 13px; line-height:1.45; }
+    .actions{ display:flex; flex-wrap:wrap; gap:10px; margin-top: 2px; }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding: 9px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      font-size: 13px;
+      cursor:pointer;
+      text-decoration:none !important;
+      color: inherit;
+    }
+    .btn.primary{
+      background: rgba(124,92,255,.18);
+      border-color: rgba(124,92,255,.35);
+    }
+    .btn:hover{ filter: brightness(1.08); }
+    .btn:active{ transform: translateY(1px); }
+
+    .embed{
+      border-top:1px solid var(--line);
+      background: rgba(0,0,0,.15);
+      padding: 0;
+      height: 0;
+      overflow:hidden;
+      transition: height .25s ease;
+    }
+    .embed.open{ height: 540px; }
+    iframe{
+      width:100%;
+      height: 540px;
+      border: 0;
+      display:block;
+    }
+
+    footer{
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 12px;
+      text-align:center;
+      opacity:.9;
+    }
+
+    @media (max-width: 860px){
+      .card{ grid-column: span 12; }
+      header{ flex-direction:column; align-items:flex-start; }
+      .pillrow{ justify-content:flex-start; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div class="title">
+        <h1 id="siteTitle">Levi’s Media Hub</h1>
+        <p class="subtitle" id="siteSubtitle">Movies • TV • Books • Notion</p>
+      </div>
+      <div class="pillrow" id="pillrow"></div>
+    </header>
+
+    <section class="grid" id="grid"></section>
+
+    <footer>
+      Note: many sites (Letterboxd/Goodreads/etc.) block iframe embeds. Notion usually works if shared publicly.
+    </footer>
+  </div>
+
+  <script>
+    const PROFILE = {
+      title: "Levi’s Media Hub",
+      subtitle: "Movies • TV • Books • Notion",
+      pills: ["Letterboxd", "Serializd", "Goodreads", "Notion"]
+    };
+
+    // Your links (as provided)
+    const LINKS = [
+      {
+        name: "Letterboxd",
+        url: "https://letterboxd.com/mujiechen/films/",
+        note: "Films I’ve watched (and ratings/lists via my profile).",
+        embeddable: false,
+        embedUrl: null
+      },
+      {
+        name: "Serializd",
+        url: "https://www.serializd.com/user/mujiechen/currently_watching",
+        note: "What I’m currently watching.",
+        embeddable: false,
+        embedUrl: null
+      },
+      {
+        name: "Goodreads",
+        url: "https://www.goodreads.com/review/list/93564062-mujie-chen?ref=nav_mybooks&shelf=read",
+        note: "Books I’ve read (shelf: read).",
+        embeddable: false,
+        embedUrl: null
+      },
+      {
+        name: "Notion – DB 1",
+        url: "https://levic.notion.site/83b8f95aa47c412da1c31c06ec452ff8?v=2b3053aab0a74e29a85046adfdf1bffd",
+        note: "Public Notion database.",
+        embeddable: true,
+        embedUrl: "https://levic.notion.site/83b8f95aa47c412da1c31c06ec452ff8?v=2b3053aab0a74e29a85046adfdf1bffd"
+      },
+      {
+        name: "Notion – DB 2",
+        url: "https://levic.notion.site/ee620ac8d4544784b8bc2ad028a62d09?v=933b0db6e28447d284dffe480b3f09e2",
+        note: "Another public Notion database.",
+        embeddable: true,
+        embedUrl: "https://levic.notion.site/ee620ac8d4544784b8bc2ad028a62d09?v=933b0db6e28447d284dffe480b3f09e2"
+      }
+    ];
+
+    const $ = (sel) => document.querySelector(sel);
+
+    $("#siteTitle").textContent = PROFILE.title;
+    $("#siteSubtitle").textContent = PROFILE.subtitle;
+
+    const pillrow = $("#pillrow");
+    PROFILE.pills.forEach(p => {
+      const span = document.createElement("span");
+      span.className = "pill";
+      span.textContent = p;
+      pillrow.appendChild(span);
+    });
+
+    function icon(name){
+      const map = {
+        "Letterboxd": "🎬",
+        "Serializd": "📺",
+        "Goodreads": "📚",
+        "Notion – DB 1": "🗂️",
+        "Notion – DB 2": "🗃️",
+      };
+      return map[name] || "🔗";
+    }
+
+    function makeCard(item){
+      const card = document.createElement("article");
+      card.className = "card";
+
+      const head = document.createElement("header");
+      const h2 = document.createElement("h2");
+      h2.innerHTML = `<span aria-hidden="true">${icon(item.name)}</span> ${item.name}`;
+
+      const badge = document.createElement("span");
+      badge.className = "badge";
+      badge.textContent = item.embeddable ? "embed OK" : "link";
+
+      head.appendChild(h2);
+      head.appendChild(badge);
+
+      const body = document.createElement("div");
+      body.className = "body";
+
+      const desc = document.createElement("p");
+      desc.className = "desc";
+      desc.textContent = item.note || "";
+
+      const actions = document.createElement("div");
+      actions.className = "actions";
+
+      const openBtn = document.createElement("a");
+      openBtn.className = "btn primary";
+      openBtn.href = item.url;
+      openBtn.target = "_blank";
+      openBtn.rel = "noopener noreferrer";
+      openBtn.textContent = "Open";
+      actions.appendChild(openBtn);
+
+      let embedWrap = null;
+
+      if (item.embeddable && item.embedUrl){
+        const toggleBtn = document.createElement("button");
+        toggleBtn.className = "btn";
+        toggleBtn.type = "button";
+        toggleBtn.textContent = "Toggle embed";
+        actions.appendChild(toggleBtn);
+
+        embedWrap = document.createElement("div");
+        embedWrap.className = "embed";
+
+        const iframe = document.createElement("iframe");
+        iframe.loading = "lazy";
+        iframe.referrerPolicy = "no-referrer";
+        iframe.src = item.embedUrl;
+
+        embedWrap.appendChild(iframe);
+
+        toggleBtn.addEventListener("click", () => {
+          embedWrap.classList.toggle("open");
+        });
+      }
+
+      body.appendChild(desc);
+      body.appendChild(actions);
+
+      card.appendChild(head);
+      card.appendChild(body);
+      if (embedWrap) card.appendChild(embedWrap);
+
+      return card;
+    }
+
+    const grid = $("#grid");
+    LINKS.forEach(item => grid.appendChild(makeCard(item)));
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
 <!-- take inspiration from site map seat61.com -->
 <!-- or pay someone on fiverr -->
