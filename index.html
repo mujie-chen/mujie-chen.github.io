@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Mujie Chen</title>
-  <meta name="description" content="Placeholder content for eventual personal website" />
+  <title>Levi Chen</title>
+  <meta name="description" content="a personal website" />
   <link rel="stylesheet" href="/style.css">
 </head>
 
@@ -12,27 +12,33 @@
   <div class="wrap">
     <header>
       <div class="title">
-        <h1 id="siteTitle">Placeholder Content</h1>
-        <p class="subtitle" id="siteSubtitle">Movies • TV • Books • Notion</p>
+        <h1 id="siteTitle">"Levi Assorted Trackers"</h1>
+        <p class="subtitle" id="siteSubtitle">""</p>
       </div>
       <div class="pillrow" id="pillrow"></div>
     </header>
 
     <section class="grid" id="grid"></section>
 
+    <section id="movies">
+      <h2>Recent flicks</h2>
+      <movie-box-list limit="8"></movie-box-list>
+    </section>
+
     <footer>
-      placeholder
+      <!-- footer here -->
     </footer>
   </div>
 
+  <script src="/movie-box.js" type="module"></script>
   <script>
     const PROFILE = {
-      title: "Levi’s Media Hub",
-      subtitle: "Movies • TV • Books • Notion",
-      pills: ["Letterboxd", "Serializd", "Goodreads", "Notion"]
+      title: "Levi Assorted Trackers",
+      // subtitle: "",
+      pills: ["Letterboxd", "Serializd", "Goodreads", "Recipes", "Coffee"]
     };
 
-    // Your links (as provided)
+    // Links
     const LINKS = [
       {
         name: "Letterboxd",
@@ -88,9 +94,9 @@
       const map = {
         "Letterboxd": "🎬",
         "Serializd": "📺",
-        "Goodreads": "📚",
-        "Notion – DB 1": "🗂️",
-        "Notion – DB 2": "🗃️",
+        "Goodreads": "📖",
+        "Recipes": "🍳",
+        "Coffee Log": "☕",
       };
       return map[name] || "🔗";
     }
@@ -104,8 +110,8 @@
       h2.innerHTML = `<span aria-hidden="true">${icon(item.name)}</span> ${item.name}`;
 
       const badge = document.createElement("span");
-      badge.className = "badge";
-      badge.textContent = item.embeddable ? "embed OK" : "link";
+      // badge.className = "badge";
+      // badge.textContent = item.embeddable ? "embed OK" : "link";
 
       head.appendChild(h2);
       head.appendChild(badge);
@@ -165,6 +171,7 @@
     const grid = $("#grid");
     LINKS.forEach(item => grid.appendChild(makeCard(item)));
   </script>
+  <script src="/movies.js"></script>
 </body>
 </html>
 
