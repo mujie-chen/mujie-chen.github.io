@@ -331,7 +331,7 @@ h1 { margin:0; font-size: 40px; font-weight: 600; letter-spacing: -.5px; }
 #embed-container {
   width: 100%;
   background: var(--bg);
-  padding: 12px 12px1
+  padding: 12px;
   margin-top: -32px;
   position: relative;
   z-index: 1;
@@ -368,8 +368,10 @@ footer{
 /* Movie Poster Card */
 .movie-poster {
   position: relative;
-  width: 120px;
-  height: 180px;
+  width: 100%;
+  max-width: 120px;
+  aspect-ratio: 2 / 3;
+  height: auto;
   overflow: hidden;
   text-decoration: none;
   color: inherit;
@@ -488,8 +490,8 @@ movie-box-list,
 book-box-list,
 serial-box-list {
   display: grid;
-  grid-template-columns: repeat(4, 120px);
-  grid-template-rows: repeat(2, 180px);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, auto));
   justify-content: start;
   width: 100%;
   gap: 16px;
@@ -513,5 +515,15 @@ serial-box {
 @media (max-width: 528px) {
   .visited-places-section{
     width: 100%;
+  }
+
+  letterboxd-grid,
+  goodreads-grid,
+  serializd-grid,
+  movie-box-list,
+  book-box-list,
+  serial-box-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
   }
 }
