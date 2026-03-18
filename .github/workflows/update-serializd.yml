@@ -1,0 +1,26 @@
+name: Update Serializd diary
+
+on:
+  schedule:
+    - cron: "0 6,18 * * *"   # runs at 6 AM and 6 PM UTC every day
+  workflow_dispatch:           # allows manual trigger from the GitHub Actions tab
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run updater
+        run: python3 update-serializd.py
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add serializd.json
+          git diff --cached --quiet || git commit -m "chore: refresh Serializd diary [skip ci]"
+          git push
