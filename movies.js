@@ -82,7 +82,6 @@ async function initMovies() {
     posterCard.target = '_blank';
     posterCard.rel = 'noopener noreferrer';
     posterCard.className = 'movie-poster';
-    posterCard.dataset.index = index;
     posterCard.title = movie.title;
 
     const img = document.createElement('img');
@@ -115,26 +114,6 @@ async function initMovies() {
 
   container.innerHTML = '';
   container.appendChild(postersContainer);
-
-  // Add intersection observer for active state
-  const posterCards = postersContainer.querySelectorAll('.movie-poster');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('active');
-      } else {
-        entry.target.classList.remove('active');
-      }
-    });
-  }, { threshold: 0.5 });
-
-  posterCards.forEach(el => observer.observe(el));
-
-  // Smooth scroll with wheel event
-  postersContainer.addEventListener('wheel', (e) => {
-    e.preventDefault();
-    postersContainer.scrollLeft += e.deltaY;
-  });
 }
 
 if (document.readyState === 'loading') {

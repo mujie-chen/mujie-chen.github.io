@@ -5,7 +5,7 @@
   --line: #f0f0f0;
   --accent: #000000;
   --radius: 12px;
-  --max: 900px;
+  --max: 528px;
   --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
 }
 
@@ -53,12 +53,12 @@ h1 { margin:0; font-size: 32px; font-weight: 600; letter-spacing: -.5px; }
 .grid{
   margin-top: 32px;
   display:grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 32px;
 }
 
 .card{
-  grid-column: span 1;
+  grid-column: span 2;
   border: none;
   background: transparent;
   border-radius: 0;
@@ -67,6 +67,30 @@ h1 { margin:0; font-size: 32px; font-weight: 600; letter-spacing: -.5px; }
   display:flex;
   flex-direction:column;
   min-height: auto;
+}
+
+.card[data-letterboxd]{
+  grid-column: span 4;
+}
+
+.card[data-letterboxd] .body{
+  gap: 18px;
+}
+
+.card[data-serializd]{
+  grid-column: span 4;
+}
+
+.card[data-serializd] .body{
+  gap: 18px;
+}
+
+.card[data-goodreads]{
+  grid-column: span 4;
+}
+
+.card[data-goodreads] .body{
+  gap: 18px;
 }
 
 .card header{
@@ -132,20 +156,32 @@ h1 { margin:0; font-size: 32px; font-weight: 600; letter-spacing: -.5px; }
 .btn:active{ transform: scale(0.98); }
 
 .embed{
-  border-top: none;
   background: transparent;
   padding: 0;
-  height: 0;
-  overflow:hidden;
-  transition: height .25s ease;
-  margin-top: 12px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  margin: 0;
+  display: none;
 }
 
-.embed.open{ height: 540px; }
+.embed.open{ 
+  max-height: 1300px;
+  display: block;
+}
+
+#embed-container {
+  width: 100%;
+  background: var(--bg);
+  padding: 12px 24px;
+  margin-top: -32px;
+  position: relative;
+  z-index: 1;
+}
+
 iframe{
   width:100%;
-  height: 540px;
-  border: 1px solid var(--line);
+  min-height: 1200px;
   display:block;
   border-radius: var(--radius);
 }
@@ -174,53 +210,23 @@ footer{
   letter-spacing: -.3px;
 }
 
-.movies-carousel {
-  width: 100%;
-  overflow: hidden;
-}
-
 .movies-posters {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(4, 120px);
   gap: 16px;
-  overflow-x: auto;
-  scroll-behavior: smooth;
   padding: 8px 0;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
-  scrollbar-color: var(--line) transparent;
-}
-
-.movies-posters::-webkit-scrollbar {
-  height: 4px;
-}
-
-.movies-posters::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.movies-posters::-webkit-scrollbar-thumb {
-  background: var(--line);
-  border-radius: 2px;
-}
-
-.movies-posters::-webkit-scrollbar-thumb:hover {
-  background: var(--muted);
 }
 
 /* Movie Poster Card */
 .movie-poster {
   position: relative;
-  flex-shrink: 0;
   width: 120px;
   height: 180px;
-  border-radius: var(--radius);
   overflow: hidden;
   text-decoration: none;
   color: inherit;
   transition: transform 0.3s, box-shadow 0.3s;
   cursor: pointer;
-  --mouse-x: 50%;
-  --mouse-y: 50%;
 }
 
 .movie-poster:hover {
@@ -228,16 +234,11 @@ footer{
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
 }
 
-.movie-poster.active {
-  box-shadow: 0 0 0 2px var(--accent);
-}
-
 /* Poster Image */
 .poster-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: var(--mouse-x) var(--mouse-y);
   transition: opacity 0.3s;
   opacity: 0;
 }
@@ -284,8 +285,7 @@ footer{
   transition: opacity 0.3s;
 }
 
-.movie-poster:hover .poster-overlay,
-.movie-poster.active .poster-overlay {
+.movie-poster:hover .poster-overlay {
   opacity: 1;
 }
 
@@ -295,6 +295,7 @@ footer{
   font-weight: 600;
   color: white;
   line-height: 1.3;
+  line-clamp: 2;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -313,125 +314,60 @@ footer{
     grid-template-columns: 1fr; 
     gap: 24px;
   }
+  .card{
+    grid-column: span 1 !important;
+  }
   header{ flex-direction:column; align-items:flex-start; }
   .pillrow{ justify-content:flex-start; }
   h1 { font-size: 28px; }
 }
 
-/* 3D Movie Box Section (Rogie-style) */
+/* Movie Box List Container */
 movie-box-list {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(4, 120px);
   width: 100%;
-  gap: 40px;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-  margin-top: 16px;
-  padding: 24px 0;
+  gap: 16px;
+  margin-top: 0;
+  padding: 0;
 }
 
 movie-box {
   display: block;
-  perspective: 1200px;
 }
 
-/* Main 3D Box */
-.box {
-  --width: 150;
-  --height: 225;
-  --depth: 26;
-  --cover: none;
-  width: calc(var(--width) * 1px);
-  height: calc(var(--height) * 1px);
-  position: relative;
-  transform-style: preserve-3d;
-  transform-origin: 50% 50% 0;
-  transition: transform 0.06s linear !important;
-}
-
-.box > div {
-  position: absolute;
+book-box-list {
+  display: grid;
+  grid-template-columns: repeat(4, 120px);
   width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
+  gap: 16px;
+  margin-top: 0;
+  padding: 0;
 }
 
-.box .front {
-  background: var(--cover);
-  background-size: cover;
-  background-position: center;
-  background-color: #ddd;
-  background-repeat: no-repeat;
-  transform: translateZ(calc(var(--depth) * 0.5px));
+book-box {
+  display: block;
 }
 
-.box .back {
-  background: var(--cover);
-  background-position: 50% 50%;
-  background-size: 200%;
-  background-repeat: no-repeat;
-  transform: rotateY(180deg) translateZ(calc(var(--depth) * 0.5px));
-  filter: blur(4px) brightness(0.3);
-  background-color: rgba(0, 0, 0, 0.1);
+serial-box-list {
+  display: grid;
+  grid-template-columns: repeat(4, 120px);
+  width: 100%;
+  gap: 16px;
+  margin-top: 0;
+  padding: 0;
 }
 
-.box .right {
-  display: none;
+serial-box {
+  display: block;
 }
 
-.box .left {
-  width: calc(var(--depth) * 1px);
-  transform: rotateY(-90deg) translateZ(calc(var(--width) * 0.5px));
-  background: linear-gradient(90deg, rgba(0,0,0,0.5), rgba(0,0,0,0.1));
-}
-
-.box .top {
-  height: calc(var(--depth) * 1px);
-  transform: rotateX(90deg) translateZ(calc(var(--height) * 0.5px));
-  background: linear-gradient(180deg, rgba(255,255,255,0.15), rgba(0,0,0,0.05));
-}
-
-.box .bottom {
-  height: calc(var(--depth) * 1px);
-  transform: rotateX(-90deg) translateZ(calc(var(--height) * 0.5px));
-  background: linear-gradient(180deg, rgba(0,0,0,0.05), rgba(0,0,0,0.25));
-}
-
-/* VHS Tape Inside (hidden by default) */
-.tape.box {
-  --width: 144;
-  --height: 221;
-  --depth: 22;
-  transform: translate3D(2px, 2px, -2px);
-  display: none;
-}
-
-.tape.box > * {
-  background: linear-gradient(135deg, #555, #222);
-}
-
-.tape.box .front,
-.tape.box .back {
-  background: linear-gradient(135deg, #666, #333);
-}
-
-/* Responsive */
 @media (max-width: 768px) {
-  movie-box-list {
-    gap: 24px;
-    justify-content: flex-start;
-    overflow-x: auto;
-    padding: 12px 0;
-  }
-
-  .box {
-    --width: 100;
-    --height: 150;
-    --depth: 18;
+  movie-box-list,
+  book-box-list,
+  serial-box-list {
+    grid-template-columns: repeat(2, 120px);
+    gap: 10px;
+    padding: 0px 0;
   }
 }

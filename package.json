@@ -1,0 +1,13 @@
+{
+  "name": "levi-website",
+  "version": "1.0.0",
+  "description": "Personal website",
+  "scripts": {
+    "update-books": "node update-books.js",
+    "update-serializd": "node update-serializd.js",
+    "update-all": "npm run update-books && npm run update-serializd"
+  },
+  "dependencies": {
+    "jsdom": "^23.0.0"
+  }
+}

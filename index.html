@@ -20,15 +20,12 @@
 
     <section class="grid" id="grid"></section>
 
-    <section id="movies">
-      <h2>Recent flicks</h2>
-      <movie-box-list limit="8"></movie-box-list>
-    </section>
-
     <footer>
       <!-- footer here -->
     </footer>
   </div>
+
+  <div id="embed-container"></div>
 
   <script src="/movie-box.js" type="module"></script>
   <script>
@@ -43,37 +40,37 @@
       {
         name: "Letterboxd",
         url: "https://letterboxd.com/mujiechen/films/",
-        note: "Movies",
+        note: "My Last 8 Movies",
         embeddable: false,
         embedUrl: null
       },
       {
         name: "Serializd",
-        url: "https://www.serializd.com/user/mujiechen/currently_watching",
-        note: "TV",
+        url: "https://www.serializd.com/user/mujiechen/diary",
+        note: "My Last 8 Diary Entries",
         embeddable: false,
         embedUrl: null
       },
       {
         name: "Goodreads",
         url: "https://www.goodreads.com/review/list/93564062-mujie-chen?ref=nav_mybooks&shelf=read",
-        note: "Books",
+        note: "My Last 8 Books",
         embeddable: false,
         embedUrl: null
       },
       {
         name: "Recipes",
         url: "https://levic.notion.site/83b8f95aa47c412da1c31c06ec452ff8?v=2b3053aab0a74e29a85046adfdf1bffd",
-        note: "Notion Database",
+        // note: "Notion Database",
         embeddable: true,
-        embedUrl: "https://levic.notion.site/83b8f95aa47c412da1c31c06ec452ff8?v=2b3053aab0a74e29a85046adfdf1bffd"
+        embedUrl: "https://levic.notion.site/ebd//83b8f95aa47c412da1c31c06ec452ff8?v=1cda2d8ec0384eefbadccc9024ef3e74"
       },
       {
         name: "Coffee Log",
         url: "https://levic.notion.site/ee620ac8d4544784b8bc2ad028a62d09?v=933b0db6e28447d284dffe480b3f09e2",
-        note: "Notion Database",
+        // note: "Notion Database",
         embeddable: true,
-        embedUrl: "https://levic.notion.site/ee620ac8d4544784b8bc2ad028a62d09?v=933b0db6e28447d284dffe480b3f09e2"
+        embedUrl: "https://levic.notion.site/ebd//ee620ac8d4544784b8bc2ad028a62d09?v=933b0db6e28447d284dffe480b3f09e2"
       }
     ];
 
@@ -81,14 +78,6 @@
 
     $("#siteTitle").textContent = PROFILE.title;
     $("#siteSubtitle").textContent = PROFILE.subtitle;
-
-    const pillrow = $("#pillrow");
-    PROFILE.pills.forEach(p => {
-      const span = document.createElement("span");
-      span.className = "pill";
-      span.textContent = p;
-      pillrow.appendChild(span);
-    });
 
     function icon(name){
       const map = {
@@ -104,6 +93,17 @@
     function makeCard(item){
       const card = document.createElement("article");
       card.className = "card";
+      
+      // Mark feed cards to span full width
+      if (item.name === "Letterboxd") {
+        card.setAttribute("data-letterboxd", "true");
+      }
+      if (item.name === "Serializd") {
+        card.setAttribute("data-serializd", "true");
+      }
+      if (item.name === "Goodreads") {
+        card.setAttribute("data-goodreads", "true");
+      }
 
       const head = document.createElement("header");
       const h2 = document.createElement("h2");
@@ -123,43 +123,123 @@
       desc.className = "desc";
       desc.textContent = item.note || "";
 
-      const actions = document.createElement("div");
-      actions.className = "actions";
-
-      const openBtn = document.createElement("a");
-      openBtn.className = "btn primary";
-      openBtn.href = item.url;
-      openBtn.target = "_blank";
-      openBtn.rel = "noopener noreferrer";
-      openBtn.textContent = "Open";
-      actions.appendChild(openBtn);
+      body.appendChild(desc);
 
       let embedWrap = null;
 
-      if (item.embeddable && item.embedUrl){
-        const toggleBtn = document.createElement("button");
-        toggleBtn.className = "btn";
-        toggleBtn.type = "button";
-        toggleBtn.textContent = "Toggle embed";
-        actions.appendChild(toggleBtn);
+      // Skip Open button for feed cards and render lists instead
+      if (item.name !== "Letterboxd" && item.name !== "Serializd" && item.name !== "Goodreads") {
+        const actions = document.createElement("div");
+        actions.className = "actions";
 
-        embedWrap = document.createElement("div");
-        embedWrap.className = "embed";
+        if (item.embeddable && item.embedUrl){
+          const toggleBtn = document.createElement("button");
+          toggleBtn.className = "btn primary";
+          toggleBtn.type = "button";
+          toggleBtn.textContent = "Show";
+          actions.appendChild(toggleBtn);
 
-        const iframe = document.createElement("iframe");
-        iframe.loading = "lazy";
-        iframe.referrerPolicy = "no-referrer";
-        iframe.src = item.embedUrl;
+          embedWrap = document.createElement("div");
+          embedWrap.className = "embed";
+          embedWrap.setAttribute("data-embed-name", item.name);
 
-        embedWrap.appendChild(iframe);
+          const iframe = document.createElement("iframe");
+          iframe.src = item.embedUrl;
+          iframe.style.width = "100%";
+          iframe.style.minHeight = "1200px";
+          iframe.setAttribute("frameborder", "0");
+          iframe.setAttribute("allowfullscreen", "true");
 
-        toggleBtn.addEventListener("click", () => {
-          embedWrap.classList.toggle("open");
-        });
+          embedWrap.appendChild(iframe);
+
+          toggleBtn.addEventListener("click", () => {
+            const embedContainer = $("#embed-container");
+            const existingEmbeds = document.querySelectorAll(".embed.open");
+            
+            // Close all other embeds
+            existingEmbeds.forEach(embed => {
+              if (embed !== embedWrap) {
+                embed.classList.remove("open");
+              }
+            });
+            
+            // Toggle current embed
+            embedWrap.classList.toggle("open");
+            
+            if (embedWrap.classList.contains("open")) {
+              embedContainer.appendChild(embedWrap);
+            }
+          });
+        } else {
+          const openBtn = document.createElement("a");
+          openBtn.className = "btn primary";
+          openBtn.href = item.url;
+          openBtn.target = "_blank";
+          openBtn.rel = "noopener noreferrer";
+          openBtn.textContent = "Open";
+          actions.appendChild(openBtn);
+        }
+
+        body.appendChild(actions);
+      } else if (item.name === "Letterboxd") {
+        // For Letterboxd, add movie box list
+        try {
+          const moviesList = document.createElement("movie-box-list");
+          moviesList.setAttribute("limit", "8");
+          body.appendChild(moviesList);
+        } catch (err) {
+          console.error('Error rendering Letterboxd:', err);
+          // Fallback to showing just an Open button
+          const actions = document.createElement("div");
+          actions.className = "actions";
+          const openBtn = document.createElement("a");
+          openBtn.className = "btn primary";
+          openBtn.href = item.url;
+          openBtn.target = "_blank";
+          openBtn.rel = "noopener noreferrer";
+          openBtn.textContent = "Open";
+          actions.appendChild(openBtn);
+          body.appendChild(actions);
+        }
+      } else if (item.name === "Serializd") {
+        try {
+          const serialsList = document.createElement("serial-box-list");
+          serialsList.setAttribute("limit", "8");
+          serialsList.setAttribute("username", "mujiechen");
+          body.appendChild(serialsList);
+        } catch (err) {
+          console.error('Error rendering Serializd:', err);
+          const actions = document.createElement("div");
+          actions.className = "actions";
+          const openBtn = document.createElement("a");
+          openBtn.className = "btn primary";
+          openBtn.href = item.url;
+          openBtn.target = "_blank";
+          openBtn.rel = "noopener noreferrer";
+          openBtn.textContent = "Open";
+          actions.appendChild(openBtn);
+          body.appendChild(actions);
+        }
+      } else if (item.name === "Goodreads") {
+        try {
+          const booksList = document.createElement("book-box-list");
+          booksList.setAttribute("limit", "8");
+          booksList.setAttribute("rss-url", "https://www.goodreads.com/review/list_rss/93564062?key=gOx5DPyTBqTlYDuldRuqBewGlTF7HUBQ7D7AEz7h8kgxYwTS&shelf=read");
+          body.appendChild(booksList);
+        } catch (err) {
+          console.error('Error rendering Goodreads:', err);
+          const actions = document.createElement("div");
+          actions.className = "actions";
+          const openBtn = document.createElement("a");
+          openBtn.className = "btn primary";
+          openBtn.href = item.url;
+          openBtn.target = "_blank";
+          openBtn.rel = "noopener noreferrer";
+          openBtn.textContent = "Open";
+          actions.appendChild(openBtn);
+          body.appendChild(actions);
+        }
       }
-
-      body.appendChild(desc);
-      body.appendChild(actions);
 
       card.appendChild(head);
       card.appendChild(body);
@@ -169,6 +249,8 @@
     }
 
     const grid = $("#grid");
+    
+    // Render immediately (don't wait for custom elements)
     LINKS.forEach(item => grid.appendChild(makeCard(item)));
   </script>
   <script src="/movies.js"></script>
