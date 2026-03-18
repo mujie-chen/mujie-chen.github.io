@@ -28,16 +28,16 @@
             <a
               class="photo-week-link"
               id="weeklyPhotoLink"
-              href="/weekly-images/A7C00389.jpeg"
+              href="#"
               target="_blank"
               rel="noopener noreferrer"
             >
               <img
                 class="photo-week-image"
                 id="weeklyPhotoImage"
-                src="/weekly-images/A7C00389.jpeg"
                 alt="Weekly photo"
-                loading="lazy"
+                loading="eager"
+                fetchpriority="high"
               />
               <span class="photo-week-meta" aria-label="Camera settings">
                 <span class="photo-week-meta-item" id="weeklyPhotoFocal">35mm</span>
@@ -120,19 +120,19 @@
           <script src="https://www.visitedplaces.com/js/viewer.js"></script>
           <!-- end: VisitedPlaces.com code -->
         </section>
+
+        <section class="grid extras-grid" id="extra-grid"></section>
       </section>
 
       <section class="grid feed-grid" id="grid"></section>
     </section>
-
-    <section class="grid extras-grid" id="extra-grid"></section>
-
-    <footer>
-      a work in progress
-    </footer>
   </div>
 
   <div id="embed-container"></div>
+  
+  <footer>
+    a work in progress
+  </footer>
 
   <script src="/tracker-feeds.js" type="module"></script>
   <script src="/site-cards.js" type="module"></script>

@@ -140,6 +140,11 @@ function initWeeklyPhoto() {
   const index = hashString(week) % WEEKLY_PHOTOS.length;
   const selectedPhoto = WEEKLY_PHOTOS[index];
 
+  imageEl.classList.remove('ready');
+  imageEl.addEventListener('load', () => {
+    imageEl.classList.add('ready');
+  }, { once: true });
+
   imageEl.src = selectedPhoto.src;
   linkEl.href = selectedPhoto.src;
   focalEl.textContent = selectedPhoto.focalLength;
@@ -185,8 +190,9 @@ function createEmbeddableActions(card, body) {
       }
 
       embedPanel.classList.toggle('open');
-      if (embedPanel.classList.contains('open')) {
+      if (embedPanel.classList.contains('open') && embedContainer) {
         embedContainer.appendChild(embedPanel);
+        embedContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     });
 

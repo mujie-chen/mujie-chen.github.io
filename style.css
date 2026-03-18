@@ -130,6 +130,8 @@ h1 { margin:0; font-size: 40px; font-weight: 600; letter-spacing: -.5px; }
   letter-spacing: 0;
   display: flex;
   align-items: center;
+  justify-content: flex-start;
+  text-align: left;
   gap: 8px;
 }
 
@@ -159,6 +161,12 @@ h1 { margin:0; font-size: 40px; font-weight: 600; letter-spacing: -.5px; }
   height: 100%;
   object-fit: cover;
   display: block;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.photo-week-image.ready{
+  opacity: 1;
 }
 
 .photo-week-meta{
@@ -189,13 +197,19 @@ h1 { margin:0; font-size: 40px; font-weight: 600; letter-spacing: -.5px; }
 .feed-grid,
 .extras-grid{
   margin-top: 0;
-  grid-template-columns: 1fr;
   gap: 24px;
 }
 
 .feed-grid{
+  grid-template-columns: 1fr;
   width: min(100%, 528px);
   justify-self: end;
+}
+
+.extras-grid{
+  width: min(100%, 528px);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  justify-self: start;
 }
 
 @media (max-width: 1120px){
@@ -218,7 +232,7 @@ h1 { margin:0; font-size: 40px; font-weight: 600; letter-spacing: -.5px; }
 }
 
 .extras-grid{
-  margin-top: 32px;
+  margin-top: 0;
 }
 
 .card{
@@ -317,7 +331,7 @@ h1 { margin:0; font-size: 40px; font-weight: 600; letter-spacing: -.5px; }
 #embed-container {
   width: 100%;
   background: var(--bg);
-  padding: 12px 24px;
+  padding: 12px 12px1
   margin-top: -32px;
   position: relative;
   z-index: 1;
@@ -333,6 +347,7 @@ iframe{
 footer{
   margin-top: 48px;
   padding-top: 32px;
+  padding-bottom: 32px;
   border-top: 1px solid var(--line);
   color: var(--muted);
   font-size: 12px;
@@ -347,7 +362,7 @@ footer{
 
 #chartdiv{
   width: 100%;
-  height: 275px;
+  height: 260px;
 }
 
 /* Movie Poster Card */
@@ -443,7 +458,7 @@ footer{
 }
 
 @media (max-width: 768px){
-  .grid,
+  .grid:not(.extras-grid),
   .dashboard-layout{ 
     grid-template-columns: 1fr; 
     gap: 24px;
@@ -457,9 +472,12 @@ footer{
     grid-column: span 1 !important;
   }
 
-  header{ flex-direction:column; align-items:flex-start; }
   .pillrow{ justify-content:flex-start; margin-top: 0; }
   h1 { font-size: 28px; }
+}
+
+@media (max-width: 420px){
+  .wrap > header{ flex-direction:column; align-items:flex-start; }
 }
 
 /* Movie Box List Container */
@@ -471,6 +489,8 @@ book-box-list,
 serial-box-list {
   display: grid;
   grid-template-columns: repeat(4, 120px);
+  grid-template-rows: repeat(2, 180px);
+  justify-content: start;
   width: 100%;
   gap: 16px;
   margin-top: 0;
@@ -490,18 +510,7 @@ serial-box {
   display: block;
 }
 
-@media (max-width: 640px) {
-  letterboxd-grid,
-  goodreads-grid,
-  serializd-grid,
-  movie-box-list,
-  book-box-list,
-  serial-box-list {
-    grid-template-columns: repeat(2, 120px);
-    gap: 10px;
-    padding: 0px 0;
-  }
-
+@media (max-width: 528px) {
   .visited-places-section{
     width: 100%;
   }
