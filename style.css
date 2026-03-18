@@ -6,7 +6,7 @@
   --accent: #000000;
   --tile-shadow: rgba(0, 0, 0, 0.12);
   --radius: 12px;
-  --max: 576px;
+  --max: 1160px;
   --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
 }
 
@@ -49,7 +49,7 @@ header{
 .title { display:flex; flex-direction:column; gap:4px; }
 h1 { margin:0; font-size: 40px; font-weight: 600; letter-spacing: -.5px; }
 .subtitle{ margin:0; color: var(--muted); font-size: 15px; line-height:1.4; font-weight: 400; }
-.pillrow{ display:flex; flex-wrap:wrap; gap:12px; margin-top: 4px; }
+.pillrow{ display:flex; flex-wrap:wrap; gap:12px; margin-top: 9px; }
 .pill{
   border: none;
   background: transparent;
@@ -85,6 +85,140 @@ h1 { margin:0; font-size: 40px; font-weight: 600; letter-spacing: -.5px; }
   display:grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 32px;
+}
+
+.dashboard-layout{
+  margin-top: 29px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  column-gap: 48px;
+  row-gap: 24px;
+  align-items: start;
+}
+
+@media (max-width: 1120px){
+  .dashboard-layout{
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+.left-column{
+  display: grid;
+  gap: 24px;
+  width: min(100%, 528px);
+  justify-self: start;
+}
+
+.photo-week-card{
+  display: flex;
+  flex-direction: column;
+}
+
+.photo-week-header{
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 12px;
+  --line: false;
+}
+
+.photo-week-title{
+  margin: 0;
+  font-size: 29px;
+  font-weight: 600;
+  letter-spacing: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.photo-week-content{
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  border: 1px solid var(--line);
+  border-radius: 0;
+  overflow: hidden;
+  margin-top: -7.5px;
+}
+
+.photo-week-link{
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: block;
+  border: 0;
+  border-radius: inherit;
+  overflow: hidden;
+  background: var(--line);
+}
+
+.photo-week-image{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.photo-week-meta{
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(0, 0, 0, 0.45);
+  color: #ffffff;
+  line-height: 1.1;
+}
+
+.photo-week-meta-item{
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.photo-week-link:hover{
+  filter: brightness(1.04);
+}
+
+.feed-grid,
+.extras-grid{
+  margin-top: 0;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+.feed-grid{
+  width: min(100%, 528px);
+  justify-self: end;
+}
+
+@media (max-width: 1120px){
+  .left-column{
+    width: min(100%, 528px);
+    justify-self: start;
+  }
+
+  .feed-grid{
+    width: 100%;
+    justify-self: start;
+  }
+}
+
+.feed-grid .card,
+.extras-grid .card,
+.feed-grid .card[data-feed],
+.extras-grid .card[data-feed]{
+  grid-column: span 1;
+}
+
+.extras-grid{
+  margin-top: 32px;
 }
 
 .card{
@@ -206,6 +340,16 @@ footer{
   opacity: 1;
 }
 
+.visited-places-section{
+  width: 100%;
+  margin-top: 0;
+}
+
+#chartdiv{
+  width: 100%;
+  height: 275px;
+}
+
 /* Movie Poster Card */
 .movie-poster {
   position: relative;
@@ -299,13 +443,20 @@ footer{
 }
 
 @media (max-width: 768px){
-  .grid{ 
+  .grid,
+  .dashboard-layout{ 
     grid-template-columns: 1fr; 
     gap: 24px;
   }
+
+  .dashboard-layout{
+    margin-top: 24px;
+  }
+
   .card{
     grid-column: span 1 !important;
   }
+
   header{ flex-direction:column; align-items:flex-start; }
   .pillrow{ justify-content:flex-start; margin-top: 0; }
   h1 { font-size: 28px; }
@@ -339,7 +490,7 @@ serial-box {
   display: block;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 640px) {
   letterboxd-grid,
   goodreads-grid,
   serializd-grid,
@@ -349,5 +500,9 @@ serial-box {
     grid-template-columns: repeat(2, 120px);
     gap: 10px;
     padding: 0px 0;
+  }
+
+  .visited-places-section{
+    width: 100%;
   }
 }

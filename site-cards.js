@@ -3,6 +3,18 @@ const PROFILE_CONFIG = {
   subtitle: ''
 };
 
+const WEEKLY_PHOTOS = [
+  { src: '/weekly-images/A7C00389.jpeg', focalLength: '35mm', exposure: 'f/2.8', shutterSpeed: '1/250s' },
+  { src: '/weekly-images/A7C00397.jpeg', focalLength: '50mm', exposure: 'f/1.8', shutterSpeed: '1/500s' },
+  { src: '/weekly-images/A7C00657.jpeg', focalLength: '28mm', exposure: 'f/4.0', shutterSpeed: '1/200s' },
+  { src: '/weekly-images/A7C02167.jpeg', focalLength: '85mm', exposure: 'f/2.0', shutterSpeed: '1/640s' },
+  { src: '/weekly-images/A7C02955.jpeg', focalLength: '24mm', exposure: 'f/5.6', shutterSpeed: '1/125s' },
+  { src: '/weekly-images/A7C03399.jpeg', focalLength: '70mm', exposure: 'f/3.2', shutterSpeed: '1/320s' },
+  { src: '/weekly-images/A7C03693.jpeg', focalLength: '40mm', exposure: 'f/2.2', shutterSpeed: '1/400s' },
+  { src: '/weekly-images/A7C03758.jpeg', focalLength: '32mm', exposure: 'f/2.5', shutterSpeed: '1/200s' },
+  { src: '/weekly-images/A7C04345.jpeg', focalLength: '55mm', exposure: 'f/2.8', shutterSpeed: '1/320s' }
+];
+
 const TRACKER_CARDS = [
   {
     name: 'Recent Movies',
@@ -95,6 +107,44 @@ function initThemeToggle() {
 function setProfileHeader() {
   qs('#siteTitle').textContent = PROFILE_CONFIG.title;
   qs('#siteSubtitle').textContent = PROFILE_CONFIG.subtitle || '';
+}
+
+function isoWeekKey(date = new Date()) {
+  const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+  const dayNum = d.getUTCDay() || 7;
+  d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+  const weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+  return `${d.getUTCFullYear()}-W${weekNo}`;
+}
+
+function hashString(input) {
+  let hash = 0;
+  for (let i = 0; i < input.length; i += 1) {
+    hash = ((hash << 5) - hash) + input.charCodeAt(i);
+    hash |= 0;
+  }
+  return Math.abs(hash);
+}
+
+function initWeeklyPhoto() {
+  const imageEl = qs('#weeklyPhotoImage');
+  const linkEl = qs('#weeklyPhotoLink');
+  const focalEl = qs('#weeklyPhotoFocal');
+  const exposureEl = qs('#weeklyPhotoExposure');
+  const shutterEl = qs('#weeklyPhotoShutter');
+
+  if (!imageEl || !linkEl || !focalEl || !exposureEl || !shutterEl || WEEKLY_PHOTOS.length === 0) return;
+
+  const week = isoWeekKey();
+  const index = hashString(week) % WEEKLY_PHOTOS.length;
+  const selectedPhoto = WEEKLY_PHOTOS[index];
+
+  imageEl.src = selectedPhoto.src;
+  linkEl.href = selectedPhoto.src;
+  focalEl.textContent = selectedPhoto.focalLength;
+  exposureEl.textContent = selectedPhoto.exposure;
+  shutterEl.textContent = selectedPhoto.shutterSpeed;
 }
 
 function createOpenButton(url) {
@@ -201,11 +251,20 @@ function createTrackerCard(card) {
 
 function renderCards() {
   const grid = qs('#grid');
+  const extraGrid = qs('#extra-grid');
+
   for (const card of TRACKER_CARDS) {
-    grid.appendChild(createTrackerCard(card));
+    const cardElement = createTrackerCard(card);
+
+    if (card.feedType) {
+      grid?.appendChild(cardElement);
+    } else {
+      extraGrid?.appendChild(cardElement);
+    }
   }
 }
 
 setProfileHeader();
 initThemeToggle();
+initWeeklyPhoto();
 renderCards();
