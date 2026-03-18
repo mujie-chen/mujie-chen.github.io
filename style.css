@@ -4,9 +4,19 @@
   --muted: #666666;
   --line: #f0f0f0;
   --accent: #000000;
+  --tile-shadow: rgba(0, 0, 0, 0.12);
   --radius: 12px;
-  --max: 528px;
+  --max: 576px;
   --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+}
+
+:root[data-theme='dark']{
+  --bg: #111111;
+  --text: #f5f5f5;
+  --muted: #a8a8a8;
+  --line: #242424;
+  --accent: #f5f5f5;
+  --tile-shadow: rgba(0, 0, 0, 0.45);
 }
 
 *{ box-sizing:border-box; }
@@ -32,14 +42,14 @@ header{
   align-items:flex-start;
   justify-content:space-between;
   gap: 24px;
-  padding-bottom: 32px;
+  padding-bottom: 25px;
   border-bottom: 1px solid var(--line);
 }
 
 .title { display:flex; flex-direction:column; gap:4px; }
-h1 { margin:0; font-size: 32px; font-weight: 600; letter-spacing: -.5px; }
+h1 { margin:0; font-size: 40px; font-weight: 600; letter-spacing: -.5px; }
 .subtitle{ margin:0; color: var(--muted); font-size: 15px; line-height:1.4; font-weight: 400; }
-.pillrow{ display:flex; flex-wrap:wrap; gap:12px; }
+.pillrow{ display:flex; flex-wrap:wrap; gap:12px; margin-top: 4px; }
 .pill{
   border: none;
   background: transparent;
@@ -50,8 +60,28 @@ h1 { margin:0; font-size: 32px; font-weight: 600; letter-spacing: -.5px; }
   font-weight: 500;
 }
 
+.theme-toggle{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  min-width: 34px;
+  height: 34px;
+  padding: 0;
+  font-size: 16px;
+  line-height: 1;
+  color: var(--text);
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.theme-toggle:hover{
+  background: var(--line);
+}
+
 .grid{
-  margin-top: 32px;
+  margin-top: 29px;
   display:grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 32px;
@@ -91,7 +121,7 @@ h1 { margin:0; font-size: 32px; font-weight: 600; letter-spacing: -.5px; }
 
 .card h2{
   margin:0;
-  font-size: 17px;
+  font-size: 29px;
   font-weight: 600;
   letter-spacing: 0;
   display:flex;
@@ -190,7 +220,7 @@ footer{
 
 .movie-poster:hover {
   transform: scale(1.05) translateZ(0);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 8px 16px var(--tile-shadow);
 }
 
 /* Poster Image */
@@ -277,7 +307,7 @@ footer{
     grid-column: span 1 !important;
   }
   header{ flex-direction:column; align-items:flex-start; }
-  .pillrow{ justify-content:flex-start; }
+  .pillrow{ justify-content:flex-start; margin-top: 0; }
   h1 { font-size: 28px; }
 }
 

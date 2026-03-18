@@ -5,25 +5,25 @@ const PROFILE_CONFIG = {
 
 const TRACKER_CARDS = [
   {
-    name: 'Letterboxd',
+    name: 'Recent Movies',
     url: 'https://letterboxd.com/mujiechen/films/',
-    note: 'My Last 8 Movies',
+    note: '',
     feedType: 'letterboxd'
   },
   {
-    name: 'Serializd',
+    name: 'Recent TV',
     url: 'https://www.serializd.com/user/mujiechen/diary',
-    note: 'My Last 8 Diary Entries',
+    note: '',
     feedType: 'serializd'
   },
   {
-    name: 'Goodreads',
+    name: 'Recent Books',
     url: 'https://www.goodreads.com/review/list/93564062-mujie-chen?ref=nav_mybooks&shelf=read',
-    note: 'My Last 8 Books',
+    note: '',
     feedType: 'goodreads'
   },
   {
-    name: 'Recipes',
+    name: 'Recipe Book',
     url: 'https://levic.notion.site/83b8f95aa47c412da1c31c06ec452ff8?v=2b3053aab0a74e29a85046adfdf1bffd',
     embeddable: true,
     embedUrl: 'https://levic.notion.site/ebd//83b8f95aa47c412da1c31c06ec452ff8?v=1cda2d8ec0384eefbadccc9024ef3e74'
@@ -35,14 +35,6 @@ const TRACKER_CARDS = [
     embedUrl: 'https://levic.notion.site/ebd//ee620ac8d4544784b8bc2ad028a62d09?v=933b0db6e28447d284dffe480b3f09e2'
   }
 ];
-
-const TRACKER_ICONS = {
-  Letterboxd: '🎬',
-  Serializd: '📺',
-  Goodreads: '📖',
-  Recipes: '🍳',
-  'Coffee Log': '☕'
-};
 
 const FEED_RENDERERS = {
   letterboxd: (cardBody) => {
@@ -65,6 +57,40 @@ const FEED_RENDERERS = {
 };
 
 const qs = (selector) => document.querySelector(selector);
+
+function preferredTheme() {
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
+function applyTheme(theme) {
+  document.documentElement.dataset.theme = theme;
+}
+
+function initThemeToggle() {
+  applyTheme(preferredTheme());
+
+  const pillRow = qs('#pillrow');
+  if (!pillRow) return;
+
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.className = 'theme-toggle';
+
+  const syncLabel = () => {
+    const isDark = document.documentElement.dataset.theme === 'dark';
+    button.textContent = isDark ? '☀️' : '🌙';
+    button.setAttribute('aria-label', `Switch to ${isDark ? 'light' : 'dark'} mode`);
+  };
+
+  button.addEventListener('click', () => {
+    const nextTheme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+    applyTheme(nextTheme);
+    syncLabel();
+  });
+
+  syncLabel();
+  pillRow.appendChild(button);
+}
 
 function setProfileHeader() {
   qs('#siteTitle').textContent = PROFILE_CONFIG.title;
@@ -126,7 +152,7 @@ function createEmbeddableActions(card, body) {
 function createCardHeader(card) {
   const header = document.createElement('header');
   const title = document.createElement('h2');
-  title.innerHTML = `<span aria-hidden="true">${TRACKER_ICONS[card.name] || '🔗'}</span> ${card.name}`;
+  title.textContent = card.name;
   header.appendChild(title);
   return header;
 }
@@ -181,4 +207,5 @@ function renderCards() {
 }
 
 setProfileHeader();
+initThemeToggle();
 renderCards();
