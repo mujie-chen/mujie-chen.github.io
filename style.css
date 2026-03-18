@@ -69,27 +69,11 @@ h1 { margin:0; font-size: 32px; font-weight: 600; letter-spacing: -.5px; }
   min-height: auto;
 }
 
-.card[data-letterboxd]{
+.card[data-feed]{
   grid-column: span 4;
 }
 
-.card[data-letterboxd] .body{
-  gap: 18px;
-}
-
-.card[data-serializd]{
-  grid-column: span 4;
-}
-
-.card[data-serializd] .body{
-  gap: 18px;
-}
-
-.card[data-goodreads]{
-  grid-column: span 4;
-}
-
-.card[data-goodreads] .body{
+.card[data-feed] .body{
   gap: 18px;
 }
 
@@ -113,10 +97,6 @@ h1 { margin:0; font-size: 32px; font-weight: 600; letter-spacing: -.5px; }
   display:flex;
   align-items:center;
   gap: 8px;
-}
-
-.badge{
-  display: none;
 }
 
 .card .body{
@@ -194,27 +174,6 @@ footer{
   font-size: 12px;
   text-align: center;
   opacity: 1;
-}
-
-/* Movies Section */
-#movies {
-  margin-top: 48px;
-  padding-top: 32px;
-  border-top: 1px solid var(--line);
-}
-
-#movies h2 {
-  margin: 0 0 24px 0;
-  font-size: 20px;
-  font-weight: 600;
-  letter-spacing: -.3px;
-}
-
-.movies-posters {
-  display: grid;
-  grid-template-columns: repeat(4, 120px);
-  gap: 16px;
-  padding: 8px 0;
 }
 
 /* Movie Poster Card */
@@ -323,32 +282,11 @@ footer{
 }
 
 /* Movie Box List Container */
-movie-box-list {
-  display: grid;
-  grid-template-columns: repeat(4, 120px);
-  width: 100%;
-  gap: 16px;
-  margin-top: 0;
-  padding: 0;
-}
-
-movie-box {
-  display: block;
-}
-
-book-box-list {
-  display: grid;
-  grid-template-columns: repeat(4, 120px);
-  width: 100%;
-  gap: 16px;
-  margin-top: 0;
-  padding: 0;
-}
-
-book-box {
-  display: block;
-}
-
+letterboxd-grid,
+goodreads-grid,
+serializd-grid,
+movie-box-list,
+book-box-list,
 serial-box-list {
   display: grid;
   grid-template-columns: repeat(4, 120px);
@@ -358,11 +296,23 @@ serial-box-list {
   padding: 0;
 }
 
+poster-tile,
+movie-box {
+  display: block;
+}
+
+book-box {
+  display: block;
+}
+
 serial-box {
   display: block;
 }
 
 @media (max-width: 768px) {
+  letterboxd-grid,
+  goodreads-grid,
+  serializd-grid,
   movie-box-list,
   book-box-list,
   serial-box-list {

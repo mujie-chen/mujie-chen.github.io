@@ -3,11 +3,9 @@
   "version": "1.0.0",
   "description": "Personal website",
   "scripts": {
-    "update-books": "node update-books.js",
-    "update-serializd": "node update-serializd.js",
-    "update-all": "npm run update-books && npm run update-serializd"
-  },
-  "dependencies": {
-    "jsdom": "^23.0.0"
+    "sync-goodreads": "node sync-goodreads-read-shelf.js",
+    "sync-serializd-js": "node sync-serializd-diary.js",
+    "sync-serializd": "python3 sync-serializd-diary.py",
+    "sync-all": "npm run sync-goodreads && npm run sync-serializd"
   }
 }

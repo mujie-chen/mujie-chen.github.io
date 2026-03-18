@@ -4,7 +4,7 @@
  * Update books.json from Goodreads widget
  * Run this locally whenever you want to sync your latest reads
  * No npm dependencies needed - uses built-in Node.js modules
- * Usage: node update-books.js 93564062 8
+ * Usage: node sync-goodreads-read-shelf.js 93564062 8
  */
 
 const https = require('https');
